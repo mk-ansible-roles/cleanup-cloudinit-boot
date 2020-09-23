@@ -1,0 +1,19 @@
+---
+# tasks file for cleanup-image-boot
+
+- name: ensure cloud-init is deinstalled
+  yum:
+          name: cloud-init
+          state: absent
+
+- name: ensure no hostname with local ipv4 in /etc/hosts
+  lineinfile:
+          path: /etc/hosts
+          regexp: '^127\.0\.0\.1 {{ ansible_hostname }}'
+          state: absent
+
+- name: ensure no hostname with local ipv6 in /etc/hosts
+  lineinfile:
+          path: /etc/hosts
+          regexp: '^::1 {{ ansible_hostname }}'
+          state: absent
